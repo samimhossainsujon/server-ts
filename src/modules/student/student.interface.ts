@@ -22,7 +22,7 @@ export type LocalGuardian = {
 };
 
 export type BloodGroup = 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
-export type Gender = 'male' | 'female'; 
+export type Gender = 'male' | 'female' | 'other'; 
 
 export type Student = {
     id: string;

@@ -33,7 +33,7 @@ const LocalGuardianSchema = new Schema<LocalGuardian>({
 const StudentSchema = new Schema<Student>({
     id: { type: String, required: true, unique: true }, 
     name: { type: UserNameSchema, required: true }, 
-    gender: { type: String, enum: ['male', 'female'], required: true },
+    gender: { type: String, enum: ['male', 'female','other'], required: true },
     email: { type: String, unique: true, required: true},
     dateOfBirth: { type: String, required: true }, 
     contactNo: { type: String, required: true },
