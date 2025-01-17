@@ -1,41 +1,24 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from "express";
 import { studentService } from "./student.service";
-import Joi from "joi"
-
+import StudentZodSchema from "./student.validation";
 
 
 const createStudent = async (req: Request, res: Response) => {
     try {
-        const JoiValidateSchema =  Joi.object({
-            student: Joi.object({
-                id: Joi.string(),
-                name: {
-                    firstName: Joi.string().required(),
-                    middleName: Joi.string(),
-                    lastName: Joi.string().required(),
-                },
-                gender: Joi.string().required().valid(['male', 'female', 'other']),
-
-                
-            })
-        })
-
-
-
-
         const StudentData = req.body.student;
-        const result = await studentService.createStudentIntoDB(StudentData);
-        res.status(201).json({
+        const zodparsedData = StudentZodSchema.parse(StudentData);
+        const result = await studentService.createStudentIntoDB(zodparsedData);
+        res.status(200).json({
             success: true,
             message: 'Student created successfully',
-            data: result
+            data: result,
         });
-
-    } catch (error) {
-        res.status(400).json({
+    } catch (error: any) {
+        res.status(500).json({
             success: false,
-            message: 'Student creation failed',
-            error: error
+            message: error.message || "something went wrong",
+            error: error,
         });
 
     }

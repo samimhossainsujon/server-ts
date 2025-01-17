@@ -1,10 +1,11 @@
-import { Student } from './student.interface';
-import { StudentModel } from './student.model';
+import { TStudent } from "./student.interface";
+import { Student } from "./student.model";
 
 
-const createStudentIntoDB = async (student: Student) => {
+
+const createStudentIntoDB = async (studentData: TStudent) => {
     try {
-        const result = await StudentModel.create(student);
+        const result = await Student.create(studentData);
         return result;
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
@@ -13,11 +14,9 @@ const createStudentIntoDB = async (student: Student) => {
 };
 
 
-
-
 const getAllStudentsFromDB = async () => {
     try {
-        const result = await StudentModel.find();
+        const result = await Student.find();
         return result;
     } catch (error) {
         throw new Error(`Failed to fetch students: ${error instanceof Error ? error.message : error}`);
@@ -28,7 +27,7 @@ const getAllStudentsFromDB = async () => {
 
 const getSingelStudentFromDB = async (id: string) => {
     try {
-        const result = await StudentModel.findById(id);
+        const result = await Student.findById(id);
         return result;
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
@@ -40,7 +39,7 @@ const getSingelStudentFromDB = async (id: string) => {
 
 const deleteStudentFromDB = async (id: string) => {
     try {
-        const result = await StudentModel.findByIdAndDelete(id);
+        const result = await Student.findByIdAndDelete(id);
         return result;
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';

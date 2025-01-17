@@ -1,4 +1,5 @@
-export type Guardian = {
+
+export type TGuardian = {
     fatherName: string;
     fatherOccupation: string;
     fatherContact: string;
@@ -7,36 +8,38 @@ export type Guardian = {
     motherContact: string;
 };
 
-export type UserName = {
+export type TUserName = {
     firstName: string;
     middleName?: string;
     lastName: string;
 };
 
-export type LocalGuardian = {
+export type TLocalGuardian = {
     name: string;
     contact: string;
-    occupation: string; 
+    occupation: string;
     address: string;
     relation: string;
 };
 
-export type BloodGroup = 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
-export type Gender = 'male' | 'female' | 'other'; 
+export type TBloodGroup = 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
+export type TGender = 'male' | 'female' | 'other';
 
-export type Student = {
+export type TStudent = {
     id: string;
-    name: UserName; 
-    gender: Gender; 
+    name: TUserName;
+    gender: TGender;
     email: string;
     dateOfBirth: string;
     contactNo: string;
     emergencyContactNo: string;
-    bloodGroup?: BloodGroup;
+    bloodGroup?: TBloodGroup;
     presentAddress: string;
     permanentAddress: string;
-    guardian: Guardian;
-    localGuardian: LocalGuardian; 
-    profileImage?: string; 
-    isActive: 'active' | 'block'; 
+    guardian: TGuardian;
+    localGuardian: TLocalGuardian;
+    profileImage?: string;
+    isActive: 'active' | 'block';
 };
+
+
