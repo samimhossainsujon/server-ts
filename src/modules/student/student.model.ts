@@ -1,5 +1,7 @@
 import { Schema, model } from "mongoose";
-import {   TGuardian, TLocalGuardian, TStudent, TUserName } from "./student.interface";
+import { TGuardian, TLocalGuardian, TStudent, TUserName } from "./student.interface";
+import bcrypt from "bcrypt"
+import config from "../../app/config";
 
 // UserName schema
 const UserNameSchema = new Schema<TUserName>(
@@ -35,10 +37,13 @@ const LocalGuardianSchema = new Schema<TLocalGuardian>(
 
 );
 
+
+
 // Student schema
 const StudentSchema = new Schema<TStudent>(
     {
         id: { type: String, required: [true, "Student ID is required"], unique: true },
+        password: { type: String, required: [true, "password required"] },
         name: { type: UserNameSchema, required: true },
         gender: { type: String, enum: ["male", "female", "other"], required: true },
         email: { type: String, unique: true, required: [true, "Email is required"] },
@@ -56,10 +61,40 @@ const StudentSchema = new Schema<TStudent>(
         localGuardian: { type: LocalGuardianSchema, required: true },
         profileImage: { type: String, required: false },
         isActive: { type: String, enum: ["active", "block"], default: "active", required: true },
+        isDeleted: { type: Boolean, default: false }
     },
 );
 
 
+// pre save middleware configuration
+StudentSchema.pre('save', async function (next) {
+    //    hassing passwords and save in to database
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const user = this;
+    user.password = await bcrypt.hash(
+        user.password, Number(config.bcrypt_salt_rounds)
+    )
+    next()
+
+})
+
+StudentSchema.post('save', function (doc, next) {
+    doc.password = ""
+    next()
+})
+
+StudentSchema.pre("find", function (next) {
+    this.find({ isDeleted: { $ne: true } })
+    next()
+})
+StudentSchema.pre("findOne", function (next) {
+    this.find({ isDeleted: { $ne: true } })
+    next()
+})
+StudentSchema.pre("aggregate", function (next) {
+    this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } })
+    next()
+})
 
 
 export const Student = model<TStudent>("Student", StudentSchema);

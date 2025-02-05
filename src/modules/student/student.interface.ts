@@ -27,6 +27,7 @@ export type TGender = 'male' | 'female' | 'other';
 
 export type TStudent = {
     id: string;
+    password: string;
     name: TUserName;
     gender: TGender;
     email: string;
@@ -40,6 +41,8 @@ export type TStudent = {
     localGuardian: TLocalGuardian;
     profileImage?: string;
     isActive: 'active' | 'block';
+    isDeleted:boolean;
+
 };
 
 

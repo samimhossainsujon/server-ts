@@ -73,8 +73,6 @@ const deleteStudent = (req: Request, res: Response) => {
             data: result,
         });
 
-
-
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
         res.status(500).json({

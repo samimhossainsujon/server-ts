@@ -27,7 +27,8 @@ const getAllStudentsFromDB = async () => {
 
 const getSingelStudentFromDB = async (id: string) => {
     try {
-        const result = await Student.findById(id);
+        // const result = await Student.findById(id);
+        const result = await Student.aggregate([{ $match: { id: id } }])
         return result;
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
@@ -38,14 +39,10 @@ const getSingelStudentFromDB = async (id: string) => {
 
 
 const deleteStudentFromDB = async (id: string) => {
-    try {
-        const result = await Student.findByIdAndDelete(id);
-        return result;
-    } catch (error: unknown) {
-        const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
-        throw new Error(`Failed to delete student: ${errorMessage}`);
-    }
-}
+    const result = await Student.updateOne({ id }, { isDeleted: true });
+    return result;
+};
+
 
 
 export const studentService = {
